@@ -75,22 +75,50 @@ app.get("/animals", async (req, res) => {
     res.render("animals/index.ejs", { animals });
   });
 
+  // edit route
+app.get("/animals/:id/edit", (req, res) => {
+    const id = req.params.id
+    Animal.findById(id, (err, animal) => {
+        res.render("animals/edit.ejs", {animal})
+    })
+})
+
+//update route
+app.put("/animals/:id", (req, res) => {
+    const id = req.params.id
+    req.body.extinct = req.body.extinct === "on" ? true : false
+    Animal.findByIdAndUpdate(id, req.body, {new: true}, (err, animal) => {
+        res.redirect("/animals")
+    })
+})
+
 // new route
 app.get("/animals/new", (req, res) => {
     res.render("animals/new.ejs")
 })
 
-  // show route
-app.get("/animals/:id", (req, res) => {
-    
-    const id = req.params.id
-
-    Animal.findById(id, (err, animal) => {
-        
-        res.render("animals/show.ejs", {animal})
+// create route
+app.post("/animals", (req, res) => {
+    req.body.extinct = req.body.extinct === "on" ? true : false
+    Animal.create(req.body, (err, animal) => { 
+        res.redirect("/animals")
     })
 })
 
+app.delete("/animals/:id", (req, res) => {
+    const id = req.params.id
+    Animal.findByIdAndRemove(id, (err, animal) => {
+        res.redirect("/animals")
+    })
+})
+
+  // show route
+app.get("/animals/:id", (req, res) => { 
+    const id = req.params.id
+    Animal.findById(id, (err, animal) => {
+       res.render("animals/show.ejs", {animal})
+    })
+})
 
 //Port for server
 app.listen(PORT, () => console.log(`Now Listening on port ${PORT}`))

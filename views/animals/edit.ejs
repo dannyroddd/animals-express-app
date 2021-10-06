@@ -6,9 +6,9 @@
     <%- include("../partials/header.ejs") %>
     <main>
       <div>
-        <form action="/animals" method="post">
+        <form action="/animals/<%= animal._id %>?_method=PUT"" method="post">
           <fieldset>
-              <legend>Add a New Animal</legend>
+              <legend>Edit Animal</legend>
             <label>
               Species:<input
                 type="text"
@@ -30,7 +30,7 @@
                 Life Expectancy:<input type="number" name="lifeExpectancy" />
               </label>
           </fieldset>
-          <input type="submit" value="Add New Animal" />
+          <input type="submit" value="Edit Animal" />
         </form>
       </div>
     </main>
